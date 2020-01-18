@@ -1,16 +1,24 @@
 from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
 
 # declare constants
 HOST = '0.0.0.0'
 PORT = 5000
+SQLALCHEMY_DATABASE_NAME= 'test_db'
+SQLALCHEMY_DATABASE_URI = f"postgresql://localhost/{SQLALCHEMY_DATABASE_NAME}"
 
 # initialize flask application
 app = Flask(__name__)
+# add SQL connection
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+
 
 # sample hello world page
 @app.route('/')
 def hello():
-    return "<h1>Hello World</h1>"
+    return "<h1>Response from Hello World Handler!</h1>"
 
 # sample api endpoint
 @app.route('/api/test', methods=['GET', 'POST'])

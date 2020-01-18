@@ -6,7 +6,6 @@ This project is a web app built with Python and Flask to be used as a starter te
 
 * [Python 3](https://www.python.org/)
 * [Flask](http://flask.pocoo.org/)
-* [Docker](https://www.docker.com/)
 
 ## Prerequisites
 
@@ -14,11 +13,8 @@ You will need the following things properly installed on your computer:
 
 * [Git](http://git-scm.com/)
 * [Python 3](https://www.python.org/)
-* [Docker](https://www.docker.com/)
 
 ## Installation
-
-* run `git clone https://github.com/caseyr003/flask-react-template.git`
 
 ## Running
 
