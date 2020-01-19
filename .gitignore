@@ -22,6 +22,7 @@ tps3_qcontrol/__pycache__
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.vscode
 
 # System Files
 .DS_Store

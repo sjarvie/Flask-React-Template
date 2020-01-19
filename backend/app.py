@@ -1,39 +1,44 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
-# declare constants
-HOST = '0.0.0.0'
-PORT = 5000
-SQLALCHEMY_DATABASE_NAME= 'test_db'
-SQLALCHEMY_DATABASE_URI = f"postgresql://localhost/{SQLALCHEMY_DATABASE_NAME}"
+# Flask Imports
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate, upgrade, migrate
+from flask import Flask
 
-# initialize flask application
-app = Flask(__name__)
-# add SQL connection
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+# Importing configs
+from config import config_dict
 
+# For the database
+db = SQLAlchemy()
 
+def create_app(config_key='local'):
+    app = Flask(__name__)
+    # Enabling config initiation
+    app.config.from_object(config_dict[config_key])
+    config_dict[config_key].init_app(app)
+    db = SQLAlchemy(app)
+    db.init_app(app)
+    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
+    # register api
+    from api import api as api_blueprint
+    app.register_blueprint(api_blueprint)
+    return app, db, migrate
 
-# sample hello world page
-@app.route('/')
-def hello():
-    return "<h1>Response from Hello World Handler!</h1>"
+app, db, migrate = create_app()
 
-# sample api endpoint
-@app.route('/api/test', methods=['GET', 'POST'])
-def test():
-    if request.method == 'POST':
-        # get parameters from post request
-        parameters = request.get_json()
-        if 'test' in parameters:
-            return jsonify({'value': parameters['test']})
-        return jsonify({'error'})
-    else:
-        return jsonify({'test': 'success'})
+@app.cli.command()
+def migrate():
+    migrate()
+
+@app.cli.command()
+def upgrade():
+    upgrade()
 
 
 if __name__ == '__main__':
-    app.run(host=HOST,
+    config = config_dict['local']
+    app.run(host=config.HOST,
             debug=True,
-            port=PORT)
+            port=config.PORT)

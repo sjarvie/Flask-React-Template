@@ -1,19 +1,22 @@
-from sqlalchemy.dialects.postgresql import JSON
+from flask_sqlalchemy import SQLAlchemy
+from app import db
 
-from app import app, db
-
-class Result(db.Model):
-    __tablename__ = 'results'
-
+class TestRow(db.Model):
+    __tablename__ = 'test_rows'
     id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String())
-    result_all = db.Column(JSON)
-    result_no_stop_words = db.Column(JSON)
+    data = db.Column(db.String())
 
-    def __init__(self, url, result_all, result_no_stop_words):
-        self.url = url
-        self.result_all = result_all
-        self.result_no_stop_words = result_no_stop_words
+    def __init__(self, data):
+        self.data = data
 
     def __repr__(self):
-        return '<id {}>'.format(self.id)
+        return f"<id {self.id}> <data {self.data}>"
+
+
+class TestRow2(db.Model):
+    __tablename__ = 'test_rows2'
+    id = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.String())
+
+    def __repr__(self):
+        return f"<id {self.id}> <data {self.data}>"
